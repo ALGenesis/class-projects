@@ -40,11 +40,11 @@ export const Testimonials = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex gap-4 overflow-x-auto px-4 md:px-0 md:overflow-visible md:grid md:grid-cols-3 testimonials-scroll">
             {testimonials.map((testimonial, index) => (
               <Card
                 key={index}
-                className="border-border hover:border-primary/50 transition-colors"
+                className="min-w-[80%] md:min-w-0 border-border hover:border-primary/50 transition-colors"
               >
                 <CardContent className="pt-6 space-y-4">
                   <Quote className="h-8 w-8 text-primary/30" />

@@ -1,23 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden p-4 sm:p-16">
-      <div className="absolute inset-0 z-0 opacity-40">
-        <Image
-          src="/hero-image.jpg"
-          alt="Image de collaboration"
-          fill
-          style={{ objectFit: "cover" }}
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pb-16 pt-28 sm:px-16 sm:pb-20 sm:pt-32">
+      
 
       <div className="container relative z-10 px-4">
         <div className="sm:max-w-5xl sm:mx-auto text-center space-y-4">
@@ -34,14 +24,18 @@ export const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8 ">
-            <Link href="/projects">
-              <Button size="lg" className="text-base h-12 px-8 group">
+            <Link href="/projects" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto text-base h-12 px-8 group">
                 Explorer les projets
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link href="/create">
-              <Button size="lg" variant="outline" className="text-base h-12 px-8">
+            <Link href="/create" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto text-base hover:text-background h-12 px-8"
+              >
                 Créer votre projet
               </Button>
             </Link>

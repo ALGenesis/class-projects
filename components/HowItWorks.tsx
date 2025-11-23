@@ -46,30 +46,34 @@ export const HowItWorks = () => {
             </p>
           </div>
 
-          <div className={`relative flex flex-col items-center h-fit p-2 overflow-hidden`}>
-            <div className="hidden md:block w-0.5 h-[120vh] bg-primary/20 absolute"></div>
+          <div className={`relative flex flex-col items-center h-fit p-2 overflow-hidden `}>
+
+            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-primary/30 md:h-[150vh]">
+            </div>
+
             {steps.map((step, index) => {
               const Icon = step.icon;
               return (
                 <div
                   key={index}
-                  className={`relative w-full mb-6 md:max-w-[40%] md:h-[180px] ${
+                  className={` relative w-full mb-8 md:mb-6 max-w-[90%] md:max-w-[40%] min-h-[150px] md:min-h-0 md:h-[180px] mx-auto 
+                    ${
                     index % 2 === 0
-                      ? 'md:-translate-x-[53%] md:translate-y-[20%]'
-                      : 'md:translate-x-[53%] md:-translate-y-[20%]'
+                      ? '-translate-x-4 translate-y-2  md:-translate-x-[53%] md:translate-y-[10%]'
+                      : 'translate-x-4 translate-y-2  md:translate-x-[53%] md:-translate-y-[10%]'
                   }`}
                 >
                   <Card className="relative z-10 border-border hover:border-primary/50 transition-all duration-300 h-full">
-                    <CardContent>
-                      <div className="flex items-start justify-between py-1">
-                        <div className="p-3 rounded-xl bg-primary/10">
-                          <Icon className="h-6 w-6 text-primary" />
+                    <CardContent className="h-full flex flex-col justify-between py-2">
+                      <div className="flex items-start justify-between">
+                        <div className="p-2.5 md:p-3 rounded-xl bg-primary/10">
+                          <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                         </div>
-                        <span className="text-5xl font-bold text-primary/10">
+                        <span className="text-4xl md:text-5xl font-bold text-primary/20">
                           {step.step}
                         </span>
                       </div>
-                      <h3 className="text-xl font-semibold text-foreground">
+                      <h3 className="text-lg md:text-xl font-semibold text-foreground">
                         {step.title}
                       </h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">

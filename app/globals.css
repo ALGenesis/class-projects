@@ -133,4 +133,25 @@
   button {
     @apply cursor-pointer
   }
+
+  /* Scrollbar testimoniaux : fine et discrète */
+  .testimonials-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+    padding-bottom: 0.5rem; /* espace visuel entre cartes et barre */
+    margin-bottom: -0.5rem; /* compense pour ne pas agrandir la section globale */
+  }
+
+  .testimonials-scroll::-webkit-scrollbar {
+    height: 4px; /* barre plus fine */
+  }
+
+  .testimonials-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .testimonials-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--primary) 65%, transparent);
+    border-radius: 9999px;
+  }
 }

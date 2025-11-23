@@ -80,24 +80,24 @@ export const Footer = () => {
             <div className="flex gap-3">
               <a
                 href="#"
-                className="p-2 rounded-lg bg-accent hover:bg-accent/80 transition-colors"
+                className="p-2 rounded-lg bg-primary hover:bg-background hover:border-primary border transition-colors"
                 aria-label="Twitter"
               >
-                <Twitter className="h-5 w-5 text-accent-foreground" />
+                <Twitter className="h-5 w-5 text-background hover:text-primary transition-colors" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded-lg bg-accent hover:bg-accent/80 transition-colors"
+                className="p-2 rounded-lg bg-primary hover:bg-background hover:border-primary border transition-colors"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-5 w-5 text-accent-foreground" />
+                <Linkedin className="h-5 w-5 text-background hover:text-primary transition-colors" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded-lg bg-accent hover:bg-accent/80 transition-colors"
+                className="p-2 rounded-lg bg-primary hover:bg-background hover:border-primary border transition-colors"
                 aria-label="GitHub"
               >
-                <Github className="h-5 w-5 text-accent-foreground" />
+                <Github className="h-5 w-5 text-background hover:text-primary transition-colors" />
               </a>
             </div>
           </div>

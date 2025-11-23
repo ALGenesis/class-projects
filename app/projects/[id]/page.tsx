@@ -160,14 +160,14 @@ export default function ProjectDetailsPage() {
           <div className="flex items-center justify-between gap-4">
             <Button
               variant="ghost"
-              className="inline-flex items-center gap-2"
+              className="inline-flex items-center gap-2 hover:text-background"
               onClick={() => router.push('/projects')}
             >
               <ArrowLeft className="h-4 w-4" />
               Retour aux projets
             </Button>
             <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="secondary" className="text-xs text-background">
                 {project.category}
               </Badge>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
