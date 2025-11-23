@@ -8,6 +8,8 @@ export interface Project {
   tags: string[];
   createdAt: string;
   creator: string;
+  creatorId?: string;
+   memberIds?: string[];
   longDescription?: string;
   images?: string[];
   goals?: string[];

@@ -40,7 +40,7 @@ export const FeaturesGrid = () => {
   ];
 
   return (
-    <section className="max-h-screen relative py-12 bg-accent/20 overflow-hidden">
+    <section className="relative py-12 bg-accent/20 overflow-hidden md:max-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-4 mb-16">

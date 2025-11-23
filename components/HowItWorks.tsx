@@ -34,7 +34,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-it-works" className="min-h-screen overflow-hidden relative h-auto pt-12 bg-background  ">
+    <section id="how-it-works" className="overflow-hidden relative pt-12 bg-background md:min-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-4 mb-16">
@@ -47,13 +47,20 @@ export const HowItWorks = () => {
           </div>
 
           <div className={`relative flex flex-col items-center h-fit p-2 overflow-hidden`}>
-            <div className="w-0.5  h-[120vh] bg-primary/20 absolute"></div>
+            <div className="hidden md:block w-0.5 h-[120vh] bg-primary/20 absolute"></div>
             {steps.map((step, index) => {
               const Icon = step.icon;
               return (
-                <div key={index} className={`relative max-w-[40%] h-[180px] ${index % 2 === 0 ? '-translate-x-[53%] translate-y-[20%]' :'translate-x-[53%] -translate-y-[20%]' }`}>
+                <div
+                  key={index}
+                  className={`relative w-full mb-6 md:max-w-[40%] md:h-[180px] ${
+                    index % 2 === 0
+                      ? 'md:-translate-x-[53%] md:translate-y-[20%]'
+                      : 'md:translate-x-[53%] md:-translate-y-[20%]'
+                  }`}
+                >
                   <Card className="relative z-10 border-border hover:border-primary/50 transition-all duration-300 h-full">
-                    <CardContent className="">
+                    <CardContent>
                       <div className="flex items-start justify-between py-1">
                         <div className="p-3 rounded-xl bg-primary/10">
                           <Icon className="h-6 w-6 text-primary" />
@@ -70,7 +77,6 @@ export const HowItWorks = () => {
                       </p>
                     </CardContent>
                   </Card>
-
                 </div>
               );
             })}

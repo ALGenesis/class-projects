@@ -6,6 +6,7 @@ import { Project } from "@/types/project";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useUser } from "@clerk/nextjs";
 import {
   Users,
   Calendar,
@@ -20,133 +21,14 @@ import {
   Clock,
   User,
   ArrowLeft,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
-
-const sampleProjects: Project[] = [
-  {
-    id: "1",
-    title: "AI-Powered Health Tracker",
-    description:
-      "Building a comprehensive health tracking app that uses AI to provide personalized wellness recommendations and track various health metrics.",
-    longDescription:
-      "We're creating a revolutionary health tracking platform that combines wearable device data with artificial intelligence to provide users with actionable health insights. The app will track sleep patterns, nutrition, exercise, and mental health metrics to create a holistic view of user wellness.\n\nOur mission is to make preventive healthcare accessible to everyone by providing early warning signs and personalized recommendations based on each individual's unique health profile.",
-    category: "AI/ML",
-    teamSize: 5,
-    currentMembers: 3,
-    tags: ["React", "Python", "TensorFlow", "Healthcare"],
-    createdAt: new Date().toISOString(),
-    creator: "Sarah Chen",
-    goals: [
-      "Launch MVP with basic tracking features within 3 months",
-      "Integrate with major wearable devices (Apple Watch, Fitbit)",
-      "Achieve 10,000 active users in the first year",
-      "Partner with healthcare providers for validation",
-    ],
-    lookingFor: ["Backend Developer", "ML Engineer", "UI/UX Designer"],
-    requirements: [
-      "Experience with React and modern frontend frameworks",
-      "Understanding of healthcare data privacy (HIPAA)",
-      "Passion for health and wellness technology",
-    ],
-    timeline: "6-8 months to MVP",
-    images: [
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&auto=format&fit=crop",
-    ],
-    socialLinks: {
-      website: "https://healthtracker.example.com",
-      github: "https://github.com/healthtracker",
-      twitter: "https://twitter.com/healthtracker",
-    },
-  },
-  {
-    id: "2",
-    title: "Sustainable Fashion Marketplace",
-    description:
-      "Creating an eco-friendly e-commerce platform connecting sustainable fashion brands with conscious consumers.",
-    longDescription:
-      "Join us in revolutionizing the fashion industry by building a marketplace that exclusively features sustainable, ethically-produced clothing and accessories. Our platform will use blockchain technology to verify the sustainability claims of each product and provide complete transparency about the supply chain.\n\nWe're not just building another e-commerce site—we're creating a movement toward more conscious consumption and supporting small sustainable brands that are often overlooked by major platforms.",
-    category: "Web Development",
-    teamSize: 6,
-    currentMembers: 4,
-    tags: ["Next.js", "E-commerce", "Sustainability", "Design"],
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    creator: "Alex Martinez",
-    goals: [
-      "Onboard 50+ sustainable fashion brands",
-      "Build a community of 5,000+ conscious shoppers",
-      "Implement blockchain-based verification system",
-      "Create a carbon footprint calculator for each purchase",
-    ],
-    lookingFor: ["Full-Stack Developer", "Product Designer"],
-    requirements: [
-      "Experience with Next.js and modern e-commerce platforms",
-      "Passion for sustainability and ethical fashion",
-      "Understanding of payment gateway integration",
-    ],
-    timeline: "4-6 months",
-    images: [
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop",
-    ],
-    socialLinks: {
-      website: "https://sustainablefashion.example.com",
-      linkedin: "https://linkedin.com/company/sustainablefashion",
-    },
-  },
-  {
-    id: "3",
-    title: "Local Community App",
-    description:
-      "Developing a mobile app to connect neighbors and strengthen local communities through events and resource sharing.",
-    category: "Mobile App",
-    teamSize: 4,
-    currentMembers: 2,
-    tags: ["React Native", "Community", "Social", "Firebase"],
-    createdAt: new Date(Date.now() - 172800000).toISOString(),
-    creator: "Jordan Lee",
-  },
-  {
-    id: "4",
-    title: "Educational Gaming Platform",
-    description:
-      "Building an engaging platform that combines gaming with learning for students aged 8-16.",
-    category: "Web Development",
-    teamSize: 8,
-    currentMembers: 5,
-    tags: ["Unity", "Education", "Gamification", "TypeScript"],
-    createdAt: new Date(Date.now() - 259200000).toISOString(),
-    creator: "Maya Patel",
-  },
-  {
-    id: "5",
-    title: "Remote Team Collaboration Tool",
-    description:
-      "Creating a next-generation collaboration tool specifically designed for remote teams with innovative features.",
-    category: "Web Development",
-    teamSize: 5,
-    currentMembers: 5,
-    tags: ["Vue.js", "WebRTC", "Productivity", "SaaS"],
-    createdAt: new Date(Date.now() - 345600000).toISOString(),
-    creator: "Chris Anderson",
-  },
-  {
-    id: "6",
-    title: "Smart Home Energy Manager",
-    description:
-      "Developing an IoT solution to help homeowners optimize their energy consumption and reduce costs.",
-    category: "AI/ML",
-    teamSize: 6,
-    currentMembers: 3,
-    tags: ["IoT", "Python", "Energy", "Smart Home"],
-    createdAt: new Date(Date.now() - 432000000).toISOString(),
-    creator: "Taylor Johnson",
-  },
-];
 
 export default function ProjectDetailsPage() {
   const params = useParams();
   const router = useRouter();
+  const { user } = useUser();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -157,25 +39,26 @@ export default function ProjectDetailsPage() {
       return;
     }
 
-    let projects: Project[] = [];
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("projects");
-      if (stored) {
-        try {
-          projects = JSON.parse(stored);
-        } catch {
-          projects = [];
+  
+
+    const loadProject = async () => {
+      try {
+        const res = await fetch(`/api/projects/${id}`);
+        if (res.ok) {
+          const data: Project = await res.json();
+          setProject(data);
+        } else {
+          setProject(null);
         }
+      } catch (error) {
+        console.error("Failed to load project", error);
+        setProject(null);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
-    if (projects.length === 0 && sampleProjects.length > 0) {
-      projects = sampleProjects;
-    }
-
-    const found = projects.find((p) => p.id === id) || null;
-    setProject(found);
-    setLoading(false);
+    loadProject();
   }, [params]);
 
   const handleJoinProject = () => {
@@ -187,12 +70,11 @@ export default function ProjectDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-
-        <main className="container mx-auto px-4 pt-24 pb-12">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
           <p className="text-muted-foreground">Chargement du projet…</p>
-        </main>
-       
+        </div>
       </div>
     );
   }
@@ -223,6 +105,7 @@ export default function ProjectDetailsPage() {
   }
 
   const isFull = project.currentMembers >= project.teamSize;
+  const isOwner = project.creatorId && user?.id === project.creatorId;
 
   return (
     <div className="min-h-screen bg-background">
@@ -443,14 +326,37 @@ export default function ProjectDetailsPage() {
           </div>
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button
-              onClick={handleJoinProject}
-              disabled={isFull}
-              className="gap-2"
-            >
-              <UserPlus className="h-4 w-4" />
-              {isFull ? "Équipe complète" : "Rejoindre le projet"}
-            </Button>
+            {isOwner ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => {
+                    toast.info("Fonction de mise à jour à implémenter.");
+                  }}
+                >
+                  Mettre à jour
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="gap-2"
+                  onClick={() => {
+                    toast.info("Fonction de suppression à implémenter.");
+                  }}
+                >
+                  Supprimer
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={handleJoinProject}
+                disabled={isFull}
+                className="gap-2"
+              >
+                <UserPlus className="h-4 w-4" />
+                {isFull ? "Équipe complète" : "Rejoindre le projet"}
+              </Button>
+            )}
           </div>
         </div>
       </main>

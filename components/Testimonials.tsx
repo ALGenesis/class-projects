@@ -28,7 +28,7 @@ export const Testimonials = () => {
   ];
 
   return (
-    <section className="max-h-screen relative overflow-hidden py-24 bg-accent/20">
+    <section className="relative overflow-hidden py-24 bg-accent/20 md:max-h-screen">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-4 mb-16">
