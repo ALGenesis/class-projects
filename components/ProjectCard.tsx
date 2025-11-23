@@ -23,7 +23,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Card className="group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/50 overflow-hidden">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2 mb-2">
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="default" className="text-xs">
               {project.category}
             </Badge>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">

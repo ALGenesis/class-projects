@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@clerk/nextjs";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Users,
   Calendar,
   UserPlus,
@@ -31,6 +39,8 @@ export default function ProjectDetailsPage() {
   const { user } = useUser();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const id = params?.id as string | undefined;
@@ -60,6 +70,42 @@ export default function ProjectDetailsPage() {
 
     loadProject();
   }, [params]);
+
+  const handleUpdateProject = () => {
+    if (!project) return;
+    router.push(`/update/${project.id}`);
+  };
+
+  const handleDeleteProject = async () => {
+    if (!project) return;
+    try {
+      setDeleting(true);
+      const res = await fetch(`/api/projects/${project.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok && res.status !== 204) {
+        const message = await res.text();
+        toast.error("Impossible de supprimer le projet", {
+          description: message || "Erreur inattendue du serveur",
+        });
+        return;
+      }
+
+      toast.success("Projet supprimé avec succès", {
+        description: "Le projet a été retiré de la plateforme.",
+      });
+      setDeleteDialogOpen(false);
+      router.push("/projects");
+    } catch (error) {
+      console.error("Failed to delete project", error);
+      toast.error("Impossible de supprimer le projet", {
+        description: "Veuillez réessayer plus tard.",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const handleJoinProject = () => {
     if (!project) return;
@@ -115,7 +161,7 @@ export default function ProjectDetailsPage() {
             <Button
               variant="ghost"
               className="inline-flex items-center gap-2"
-              onClick={() => router.back()}
+              onClick={() => router.push('/projects')}
             >
               <ArrowLeft className="h-4 w-4" />
               Retour aux projets
@@ -331,21 +377,44 @@ export default function ProjectDetailsPage() {
                 <Button
                   variant="outline"
                   className="gap-2"
-                  onClick={() => {
-                    toast.info("Fonction de mise à jour à implémenter.");
-                  }}
+                  onClick={handleUpdateProject}
                 >
                   Mettre à jour
                 </Button>
-                <Button
-                  variant="destructive"
-                  className="gap-2"
-                  onClick={() => {
-                    toast.info("Fonction de suppression à implémenter.");
-                  }}
-                >
-                  Supprimer
-                </Button>
+                <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                  <Button
+                    variant="destructive"
+                    className="gap-2"
+                    onClick={() => setDeleteDialogOpen(true)}
+                  >
+                    Supprimer
+                  </Button>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Supprimer ce projet ?</DialogTitle>
+                      <DialogDescription>
+                        Cette action est irréversible. Êtes-vous sûr de vouloir supprimer ce projet ?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setDeleteDialogOpen(false)}
+                        disabled={deleting}
+                      >
+                        Annuler
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={handleDeleteProject}
+                        className="gap-2"
+                        disabled={deleting}
+                      >
+                        {deleting ? "Suppression..." : "Confirmer la suppression"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </>
             ) : (
               <Button

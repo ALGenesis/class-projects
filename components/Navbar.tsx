@@ -13,7 +13,7 @@ export const Navbar = () => {
   const { user } = useUser();
 
   const navLinks = [
-    {name: 'Acceuil', href : '/'},
+    {name: 'Accueil', href : '/'},
     {name: 'Explorer les projets', href : '/projects'},
     {name: 'Mon espace', href : '/my-space'},
   ];
