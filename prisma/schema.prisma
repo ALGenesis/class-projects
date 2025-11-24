@@ -33,5 +33,20 @@ model Project {
   timeline        String?
   lookingFor      String[]
   memberIds       String[]
+  requests        ProjectRequest[]
 }
 
+model ProjectRequest {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String   @db.ObjectId
+  project     Project  @relation(fields: [projectId], references: [id])
+  userId      String
+  userName    String
+  userEmail   String
+  status      String   @default("pending") // pending, accepted, rejected
+  message     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([projectId, userId])
+}
